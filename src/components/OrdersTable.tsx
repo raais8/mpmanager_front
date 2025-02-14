@@ -109,7 +109,7 @@ export default function OrdersTable() {
                   />
                 </StyledTableCell>
                 <StyledTableCell>{row.source}</StyledTableCell>
-                <StyledTableCell>
+                <StyledTableCell sx={{ paddingTop: "0.6rem" }}>
                   {row.country === "Spain" ? (
                     <ES title="Spain" style={{ width: "25px" }} />
                   ) : (

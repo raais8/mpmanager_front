@@ -7,8 +7,12 @@ import {
   SelectChangeEvent,
   styled,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import axios from "axios";
+import { Marketplace } from "../types/marketplace";
+
+const APP_URL = "http://127.0.0.1:8000/marketplaces/api";
 
 const StyledSelect = styled(Select<string[]>)({
   backgroundColor: "#efefef",
@@ -29,9 +33,30 @@ const StyledSearch = styled("div")({
 const options = ["All", "Agrijardin ES", "Amazon"];
 
 export default function OrdersFilterRow() {
+  const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
   const [selectedSources, setSelectedSources] = useState<string[]>([
     options[0],
   ]);
+
+  useEffect(() => {
+    axios
+      .get(`${APP_URL}/list-marketplace/`)
+      .then((response) => {
+        const marketplaces: Marketplace[] = response.data.map(
+          (item: Marketplace) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+        setMarketplaces(marketplaces);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        console.log("done");
+      });
+  }, []);
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const values = event.target.value as string[];
@@ -58,13 +83,13 @@ export default function OrdersFilterRow() {
         onChange={handleChange}
         multiple
       >
-        {options.map((option, index) => (
+        {marketplaces.map((marketplace, index) => (
           <MenuItem
             key={index}
-            value={option}
-            selected={selectedSources.includes(option)}
+            value={marketplace.name}
+            // selected={selectedSources.includes(option)}
           >
-            {option}
+            {marketplace.name}
           </MenuItem>
         ))}
       </StyledSelect>
