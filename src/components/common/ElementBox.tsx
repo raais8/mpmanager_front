@@ -7,7 +7,13 @@ interface Props {
 
 export default function ElementBox({ children }: Props) {
   return (
-    <Box sx={{ backgroundColor: "#ffffff", borderRadius: "1rem" }}>
+    <Box
+      sx={{
+        backgroundColor: "#ffffff",
+        borderRadius: "1rem",
+        marginBottom: "24px",
+      }}
+    >
       {children}
     </Box>
   );

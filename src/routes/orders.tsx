@@ -1,7 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import OrdersTable from "../components/OrdersTable";
-import OrdersFilterRow from "../components/OrdersFilterRow";
-import { Box } from "@mui/material";
+import OrdersBox from "../components/orders/orders-box/OrdersBox";
 
 export const Route = createFileRoute("/orders")({
   component: Orders,
@@ -10,15 +8,7 @@ export const Route = createFileRoute("/orders")({
 function Orders() {
   return (
     <>
-      <Box
-        sx={{
-          backgroundColor: "#ffffff",
-          borderRadius: "0.6rem",
-        }}
-      >
-        <OrdersFilterRow />
-        <OrdersTable />
-      </Box>
+      <OrdersBox />
     </>
   );
 }

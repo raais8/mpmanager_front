@@ -1,6 +1,6 @@
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/layout/Navbar";
 import "@fontsource/lato";
 
 const theme = createTheme({
