@@ -1,6 +1,11 @@
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputBase, styled } from "@mui/material";
+import { useState } from "react";
+
+interface Props {
+  onSearch: (value: string) => void;
+}
 
 const StyledSearch = styled("div")({
   display: "flex",
@@ -10,15 +15,26 @@ const StyledSearch = styled("div")({
   maxHeight: "2rem",
 });
 
-export default function OrdersSerach() {
+export default function OrdersSerach({ onSearch }: Props) {
+  const [searchField, setSearchField] = useState<string>("");
+
+  const handleSearch = () => {
+    const trimmedSearch = searchField.trim();
+    onSearch(trimmedSearch.length > 0 ? trimmedSearch : "");
+  };
+
   return (
     <StyledSearch>
       <InputBase
         size={"small"}
         placeholder="Search..."
+        onChange={(event) => setSearchField(event.target.value)}
         sx={{ flexGrow: 1, paddingTop: "3.2px" }}
       />
-      <IconButton sx={{ padding: "0", paddingRight: "0.2rem" }}>
+      <IconButton
+        onClick={handleSearch}
+        sx={{ padding: "0", paddingRight: "0.2rem" }}
+      >
         <SearchIcon />
       </IconButton>
     </StyledSearch>

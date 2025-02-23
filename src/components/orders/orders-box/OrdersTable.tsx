@@ -7,7 +7,6 @@ import {
   tableCellClasses,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
 } from "@mui/material";
 import ES from "country-flag-icons/react/3x2/ES";
@@ -19,9 +18,6 @@ import { Order } from "../../../types/order/orderTypes";
 
 interface Props {
   orders: Order[];
-  ordersCount: number;
-  onCurrentPageChange: (value: number) => void;
-  onOrdersPerPageChange: (value: number) => void;
   selectedMarketplaces: number[];
 }
 
@@ -35,17 +31,8 @@ const StyledTableCell = styled(TableCell)({
   },
 });
 
-export default function OrdersTable({
-  orders,
-  ordersCount,
-  onCurrentPageChange,
-  onOrdersPerPageChange,
-  selectedMarketplaces,
-}: Props) {
+export default function OrdersTable({ orders, selectedMarketplaces }: Props) {
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(4);
-
   const allSelectedOrders =
     selectedOrders.length === orders.length && orders.length > 0;
 
@@ -67,20 +54,6 @@ export default function OrdersTable({
     } else {
       setSelectedOrders([]);
     }
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-    onCurrentPageChange(newPage + 1);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-    onCurrentPageChange(1);
-    onOrdersPerPageChange(+event.target.value);
   };
 
   return (
@@ -142,20 +115,6 @@ export default function OrdersTable({
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        component="div"
-        rowsPerPageOptions={[4, 25, 50, 100]}
-        count={ordersCount}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        sx={{
-          display: "flex",
-          justifyContent: "end",
-          borderBottom: "none",
-        }}
-      />
     </>
   );
 }

@@ -8,13 +8,15 @@ import OrdersSerach from "./OrdersSearch";
 import { Grid2 } from "@mui/material";
 import { getOrderList } from "../../../services/api/orders";
 import { Order } from "../../../types/order/orderTypes";
+import OrdersTablePagination from "./OrdersTablePagination ";
 
 export default function OrdersBox() {
-  const [maketplaces, setMarketplaces] = useState<Marketplace[]>([]);
+  const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersCount, setOrdersCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const [ordersPerPage, setOrdersPerPage] = useState<number>(4);
+  const [searchField, setSearchField] = useState<string>("");
   const [selectedMarketplaces, setSelectedMarketplaces] = useState<number[]>(
     []
   );
@@ -44,8 +46,9 @@ export default function OrdersBox() {
       setIsLoading(true);
       try {
         const { orders, ordersCount } = await getOrderList(
-          currentPage,
-          ordersPerPage
+          searchField ? undefined : currentPage + 1,
+          searchField ? undefined : ordersPerPage,
+          searchField
         );
         setOrders(orders);
         setOrdersCount(ordersCount);
@@ -57,7 +60,21 @@ export default function OrdersBox() {
     };
 
     fetchOrders();
-  }, [currentPage, ordersPerPage]);
+  }, [currentPage, ordersPerPage, searchField]);
+
+  const handleOnPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleSearch = (searchValue: string) => {
+    setCurrentPage(0);
+    setSearchField(searchValue);
+  };
+
+  const handleOnRowsPerPageChange = (count: number) => {
+    setCurrentPage(0);
+    setOrdersPerPage(count);
+  };
 
   return (
     <ElementBox>
@@ -69,20 +86,24 @@ export default function OrdersBox() {
       >
         <Grid2 size={2}>
           <MarketplaceFilter
-            marketplaces={maketplaces}
+            marketplaces={marketplaces}
             onMarketplaceSelectionChange={setSelectedMarketplaces}
           />
         </Grid2>
         <Grid2 size={2}>
-          <OrdersSerach />
+          <OrdersSerach onSearch={handleSearch} />
         </Grid2>
       </Grid2>
       <OrdersTable
         orders={orders}
-        ordersCount={ordersCount}
-        onCurrentPageChange={setCurrentPage}
-        onOrdersPerPageChange={setOrdersPerPage}
         selectedMarketplaces={selectedMarketplaces}
+      />
+      <OrdersTablePagination
+        count={ordersCount}
+        page={currentPage}
+        rowsPerPage={ordersPerPage}
+        onPageChange={handleOnPageChange}
+        onRowsPerPageChange={handleOnRowsPerPageChange}
       />
     </ElementBox>
   );

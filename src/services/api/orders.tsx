@@ -1,10 +1,14 @@
 import { Order } from "../../types/order/orderTypes";
 import axiosInstance from "./axiosInstance";
 
-export const getOrderList = async (page: number, limit: number) => {
+export const getOrderList = async (
+  page?: number,
+  limit?: number,
+  search?: string
+) => {
   try {
     const response = await axiosInstance.get("orders/api/order-list", {
-      params: { page, limit },
+      params: { page, limit, search },
     });
     const ordersCount = response.data["count"];
     const orders = response.data["results"].map((item: Order) => ({
