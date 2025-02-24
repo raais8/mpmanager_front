@@ -15,6 +15,7 @@ import { ChangeEvent, useState } from "react";
 import { Country } from "../../../types/order/orderEnums";
 import { OrderStatusName } from "../../../utils/formatters/orderFormatter";
 import { Order } from "../../../types/order/orderTypes";
+import BackLabel from "../../common/BackLabel";
 
 interface Props {
   orders: Order[];
@@ -30,6 +31,16 @@ const StyledTableCell = styled(TableCell)({
     backgroundColor: "#ffffff",
   },
 });
+
+const stautsColors = [
+  "#FFE082",
+  "#FFCC80",
+  "#90CAF9",
+  "#A5D6A7",
+  "#EF9A9A",
+  "#E0E0E0",
+  "#CE93D8",
+];
 
 export default function OrdersTable({ orders, selectedMarketplaces }: Props) {
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
@@ -106,7 +117,9 @@ export default function OrdersTable({ orders, selectedMarketplaces }: Props) {
                   <StyledTableCell>{order.order_date}</StyledTableCell>
                   <StyledTableCell>{order.total_price}</StyledTableCell>
                   <StyledTableCell>
-                    {OrderStatusName[order.status]}
+                    <BackLabel backgroundColor={stautsColors[order.status]}>
+                      {OrderStatusName[order.status]}
+                    </BackLabel>
                   </StyledTableCell>
                   <StyledTableCell>{order.ticket}</StyledTableCell>
                 </TableRow>

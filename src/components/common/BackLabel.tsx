@@ -3,20 +3,23 @@ import { styled, Tooltip } from "@mui/material";
 const StyledLabel = styled("div")({
   borderRadius: "0.6rem",
   display: "inline-block",
-  paddingLeft: "0.4rem",
-  paddingRight: "0.4rem",
+  padding: "0.075rem 0.6rem",
 });
 
 interface Props {
-  value: string;
+  children: string;
   backgroundColor: string;
   tooltip?: string;
 }
 
-export default function BackLabel({ value, backgroundColor, tooltip }: Props) {
+export default function BackLabel({
+  children,
+  backgroundColor,
+  tooltip,
+}: Props) {
   return (
     <Tooltip title={tooltip}>
-      <StyledLabel sx={{ backgroundColor }}>{value}</StyledLabel>
+      <StyledLabel sx={{ backgroundColor }}>{children}</StyledLabel>
     </Tooltip>
   );
 }

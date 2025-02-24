@@ -4,11 +4,12 @@ import axiosInstance from "./axiosInstance";
 export const getOrderList = async (
   page?: number,
   limit?: number,
-  search?: string
+  search?: string,
+  marketplace?: string
 ) => {
   try {
     const response = await axiosInstance.get("orders/api/order-list", {
-      params: { page, limit, search },
+      params: { page, limit, search, marketplace },
     });
     const ordersCount = response.data["count"];
     const orders = response.data["results"].map((item: Order) => ({

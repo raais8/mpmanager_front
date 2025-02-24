@@ -48,7 +48,8 @@ export default function OrdersBox() {
         const { orders, ordersCount } = await getOrderList(
           searchField ? undefined : currentPage + 1,
           searchField ? undefined : ordersPerPage,
-          searchField
+          searchField,
+          selectedMarketplaces.toString()
         );
         setOrders(orders);
         setOrdersCount(ordersCount);
@@ -60,7 +61,7 @@ export default function OrdersBox() {
     };
 
     fetchOrders();
-  }, [currentPage, ordersPerPage, searchField]);
+  }, [currentPage, ordersPerPage, searchField, selectedMarketplaces]);
 
   const handleOnPageChange = (page: number) => {
     setCurrentPage(page);
@@ -76,6 +77,11 @@ export default function OrdersBox() {
     setOrdersPerPage(count);
   };
 
+  const handleOnMarketplaceSelectionChange = (selection: number[]) => {
+    setCurrentPage(0);
+    setSelectedMarketplaces(selection);
+  };
+
   return (
     <ElementBox>
       <Grid2
@@ -87,7 +93,7 @@ export default function OrdersBox() {
         <Grid2 size={2}>
           <MarketplaceFilter
             marketplaces={marketplaces}
-            onMarketplaceSelectionChange={setSelectedMarketplaces}
+            onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
           />
         </Grid2>
         <Grid2 size={2}>

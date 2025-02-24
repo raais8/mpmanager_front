@@ -7,7 +7,7 @@ interface Props {
   onSearch: (value: string) => void;
 }
 
-const StyledSearch = styled("div")({
+const StyledSearch = styled("form")({
   display: "flex",
   backgroundColor: "#efefef",
   borderRadius: "0.6rem",
@@ -24,7 +24,12 @@ export default function OrdersSerach({ onSearch }: Props) {
   };
 
   return (
-    <StyledSearch>
+    <StyledSearch
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSearch();
+      }}
+    >
       <InputBase
         size={"small"}
         placeholder="Search..."
