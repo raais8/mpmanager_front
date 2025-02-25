@@ -33,3 +33,13 @@ export const getOrderList = async (
     throw error;
   }
 };
+
+export const getOrder = async (orderId: number) => {
+  try {
+    const response = await axiosInstance.get(`orders/api/order/${orderId}`);
+    const order: Order = response.data;
+    return order;
+  } catch (error) {
+    throw error;
+  }
+};

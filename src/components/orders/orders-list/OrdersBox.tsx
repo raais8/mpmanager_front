@@ -100,10 +100,7 @@ export default function OrdersBox() {
           <OrdersSerach onSearch={handleSearch} />
         </Grid2>
       </Grid2>
-      <OrdersTable
-        orders={orders}
-        selectedMarketplaces={selectedMarketplaces}
-      />
+      <OrdersTable orders={orders} />
       <OrdersTablePagination
         count={ordersCount}
         page={currentPage}

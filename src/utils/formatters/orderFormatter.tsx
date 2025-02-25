@@ -1,4 +1,4 @@
-import { OrderStatus } from "../../types/order/orderEnums";
+import { Country, OrderStatus } from "../../types/order/orderEnums";
 
 export const OrderStatusName: Record<OrderStatus, string> = {
   [OrderStatus.PROCESSING]: "Processing",
@@ -8,4 +8,9 @@ export const OrderStatusName: Record<OrderStatus, string> = {
   [OrderStatus.REFUSED]: "Refused",
   [OrderStatus.CANCELLED]: "Cancelled",
   [OrderStatus.REFUNDED]: "Refunded",
+};
+
+export const CountryCodeName: Record<Country, string> = {
+  [Country.ES]: "es",
+  [Country.FR]: "fr",
 };

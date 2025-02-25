@@ -7,6 +7,7 @@ export const getMarketplaces = async () => {
     const marketplaces = response.data.map((item: Marketplace) => ({
       id: item.id,
       name: item.name,
+      logo_url: item.logo_url,
     }));
     return marketplaces;
   } catch (error) {

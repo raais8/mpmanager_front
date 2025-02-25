@@ -11,7 +11,7 @@ export default function ElementBox({ children }: Props) {
       sx={{
         backgroundColor: "#ffffff",
         borderRadius: "1rem",
-        marginBottom: "24px",
+        marginBottom: "1rem",
       }}
     >
       {children}
