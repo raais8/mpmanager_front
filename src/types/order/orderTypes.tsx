@@ -28,6 +28,12 @@ export type Carrier = {
   name: string;
 };
 
+export type OrderItem = {
+  order_id: number;
+  quantity: number;
+  purchase_price: number;
+};
+
 export type Order = {
   id: number;
   marketplace: Marketplace;

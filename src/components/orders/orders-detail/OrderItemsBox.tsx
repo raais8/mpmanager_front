@@ -1,10 +1,10 @@
-import { Typography } from "@mui/material";
 import ElementBox from "../../common/ElementBox";
+import ItemsTable from "./ItemsTable";
 
 export default function OrderItemsBox() {
   return (
     <ElementBox>
-      <Typography>test</Typography>
+      <ItemsTable />
     </ElementBox>
   );
 }
