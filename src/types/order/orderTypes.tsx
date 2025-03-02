@@ -1,4 +1,5 @@
 import { Marketplace } from "../marketplace/marketplaceTypes";
+import { MarketplaceProduct } from "../product/productTypes";
 import { Country, OrderStatus, PayMethod } from "./orderEnums";
 
 export type Customer = {
@@ -32,6 +33,7 @@ export type OrderItem = {
   order_id: number;
   quantity: number;
   purchase_price: number;
+  marketplace_product: MarketplaceProduct;
 };
 
 export type Order = {
@@ -48,5 +50,6 @@ export type Order = {
   pay_method: PayMethod;
   package_quantity: number;
   weight: number;
+  order_items: OrderItem[];
   updated_at: string;
 };

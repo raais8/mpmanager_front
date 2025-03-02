@@ -10,7 +10,7 @@ export default function ElementBox({ children }: Props) {
     <Box
       sx={{
         backgroundColor: "#ffffff",
-        borderRadius: "1rem",
+        borderRadius: "0.6rem",
         marginBottom: "1rem",
       }}
     >

@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource/lato": "^5.1.1",
     "@mui/icons-material": "^6.4.3",
+    "@mui/lab": "^6.0.0-beta.29",
     "@mui/material": "^6.4.3",
     "@tanstack/react-router": "^1.99.13",
     "axios": "^1.7.9",

@@ -20,7 +20,7 @@ export default function OrderSourcerBox({ marketplaceLogo, country }: Props) {
           src={marketplaceLogo}
           style={{ height: "2rem", marginRight: "0.6rem" }}
         />
-        <Flag country={country} size={40} realSize={32} />
+        <Flag country={country} size={32} />
       </Box>
     </StyledElementBox>
   );

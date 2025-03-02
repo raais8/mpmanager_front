@@ -1,4 +1,5 @@
 import { styled, Tooltip } from "@mui/material";
+import { ReactNode } from "@tanstack/react-router";
 
 const StyledLabel = styled("div")({
   borderRadius: "0.6rem",
@@ -7,7 +8,7 @@ const StyledLabel = styled("div")({
 });
 
 interface Props {
-  children: string;
+  children: ReactNode;
   backgroundColor: string;
   tooltip?: string;
 }

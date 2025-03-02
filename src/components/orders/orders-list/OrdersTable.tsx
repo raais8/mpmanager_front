@@ -118,11 +118,7 @@ export default function OrdersTable({ orders }: Props) {
                   />
                 </StyledTableCell>
                 <StyledTableCell>
-                  <Flag
-                    country={order.customer.bill_country}
-                    size={40}
-                    realSize={22}
-                  />
+                  <Flag country={order.customer.bill_country} size={22} />
                 </StyledTableCell>
                 <StyledTableCell>{order.order_id}</StyledTableCell>
                 <StyledTableCell>

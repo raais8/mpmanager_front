@@ -1,10 +1,15 @@
+import { OrderItem } from "../../../types/order/orderTypes";
 import ElementBox from "../../common/ElementBox";
 import ItemsTable from "./ItemsTable";
 
-export default function OrderItemsBox() {
+interface Props {
+  items: OrderItem[];
+}
+
+export default function OrderItemsBox({ items }: Props) {
   return (
     <ElementBox>
-      <ItemsTable />
+      <ItemsTable items={items} />
     </ElementBox>
   );
 }

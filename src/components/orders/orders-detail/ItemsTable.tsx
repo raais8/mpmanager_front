@@ -1,4 +1,5 @@
 import {
+  Box,
   styled,
   Table,
   TableBody,
@@ -8,9 +9,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { OrderItem } from "../../../types/order/orderTypes";
+
+interface Props {
+  items: OrderItem[];
+}
 
 const StyledTableCell = styled(TableCell)({
-  borderRadius: "0.6rem",
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#f7f7f7",
     fontWeight: "bold",
@@ -20,19 +25,31 @@ const StyledTableCell = styled(TableCell)({
   },
 });
 
-export default function ItemsTable() {
+export default function ItemsTable({ items }: Props) {
   return (
     <TableContainer>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <StyledTableCell colSpan={3} align="center">
+            <StyledTableCell
+              colSpan={5}
+              align="center"
+              sx={{ borderTopLeftRadius: "0.6rem" }}
+            >
               Details
             </StyledTableCell>
-            <StyledTableCell align="center">Price</StyledTableCell>
+
+            <StyledTableCell
+              align="center"
+              sx={{ borderTopRightRadius: "0.6rem" }}
+            >
+              Price
+            </StyledTableCell>
           </TableRow>
           <TableRow>
-            <StyledTableCell width="55%">Description</StyledTableCell>
+            <StyledTableCell width="5%"></StyledTableCell>
+            <StyledTableCell width="10%">SKU</StyledTableCell>
+            <StyledTableCell width="40%">Description</StyledTableCell>
             <StyledTableCell align="right" width="15%">
               Quantity
             </StyledTableCell>
@@ -45,14 +62,37 @@ export default function ItemsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
+          {items.map((item, index) => (
+            <TableRow key={index}>
+              <StyledTableCell>
+                <Box sx={{ display: "flex" }}>
+                  <img
+                    src={item.marketplace_product.product.image}
+                    height="60px"
+                  />
+                </Box>
+              </StyledTableCell>
+              <StyledTableCell>
+                {item.marketplace_product.product.sku}
+              </StyledTableCell>
+              <StyledTableCell>
+                {item.marketplace_product.product.name}
+              </StyledTableCell>
+              <StyledTableCell align="right">{item.quantity}</StyledTableCell>
+              <StyledTableCell align="right">
+                {item.purchase_price}€
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                {item.purchase_price * item.quantity}€
+              </StyledTableCell>
+            </TableRow>
+          ))}
           <TableRow>
-            <StyledTableCell>Test product</StyledTableCell>
-            <StyledTableCell align="right">4.45€</StyledTableCell>
-            <StyledTableCell align="right">3</StyledTableCell>
-            <StyledTableCell align="right">12.34€</StyledTableCell>
-          </TableRow>
-          <TableRow>
-            <StyledTableCell rowSpan={3} sx={{ borderBottom: "none" }} />
+            <StyledTableCell
+              rowSpan={3}
+              colSpan={3}
+              sx={{ borderBottom: "none", borderBottomLeftRadius: "0.6rem" }}
+            />
             <StyledTableCell colSpan={2} sx={{ fontWeight: "bold" }}>
               Subtotal
             </StyledTableCell>
@@ -70,7 +110,10 @@ export default function ItemsTable() {
             >
               Total
             </StyledTableCell>
-            <StyledTableCell align="right" sx={{ borderBottom: "none" }}>
+            <StyledTableCell
+              align="right"
+              sx={{ borderBottom: "none", borderBottomRightRadius: "0.6rem" }}
+            >
               45.78€
             </StyledTableCell>
           </TableRow>
