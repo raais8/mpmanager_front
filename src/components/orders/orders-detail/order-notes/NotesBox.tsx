@@ -1,14 +1,23 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
-import ElementBox from "../../common/ElementBox";
+import { Box, Button, Typography } from "@mui/material";
+import ElementBox from "../../../common/ElementBox";
 import { useState } from "react";
-import DetailEditorModal from "./DetailEditorModal";
+import { updateOrder } from "../../../../services/api/orders";
+import NotesEditModal from "./NotesEditModal";
 
 interface Props {
-  notes: string;
+  orderId: number;
+  orderNotes: string;
 }
 
-export default function OrderNotesBox({ notes }: Props) {
-  const [open, setOpen] = useState(false);
+export default function NotesBox({ orderId, orderNotes }: Props) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [notes, setNotes] = useState<string>(orderNotes);
+
+  const handleSave = (value: string) => {
+    updateOrder(orderId, { notes: value });
+    setNotes(value);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -47,10 +56,18 @@ export default function OrderNotesBox({ notes }: Props) {
               No notes added.
             </Typography>
           ) : (
-            <Typography variant="body1">Test</Typography>
+            <Typography variant="body1" sx={{ wordBreak: "break-word" }}>
+              {notes}
+            </Typography>
           )}
         </Box>
       </ElementBox>
+      <NotesEditModal
+        open={open}
+        notes={notes}
+        onClose={() => setOpen(false)}
+        onSave={(value) => handleSave(value)}
+      />
     </>
   );
 }

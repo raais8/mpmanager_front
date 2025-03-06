@@ -1,5 +1,5 @@
 import { Country } from "../../types/order/orderEnums";
-import { CountryCodeName } from "../../utils/formatters/orderFormatter";
+import { CountryCodeAbbreviation } from "../../utils/formatters/orderFormatter";
 
 interface Props {
   country: Country;
@@ -7,12 +7,12 @@ interface Props {
 }
 
 export default function Flag({ country, size }: Props) {
-  const url = `https://flagcdn.com/${CountryCodeName[country]}.svg`;
+  const url = `https://flagcdn.com/${CountryCodeAbbreviation[country]}.svg`;
 
   return (
     <img
       src={url}
-      alt={`${CountryCodeName[country]}`}
+      alt={`${CountryCodeAbbreviation[country]}`}
       style={{ height: size, borderRadius: "0.6rem" }}
     />
   );

@@ -1,4 +1,5 @@
 import {
+  Box,
   Checkbox,
   styled,
   Table,
@@ -12,7 +13,10 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { ChangeEvent, useState } from "react";
-import { OrderStatusName } from "../../../utils/formatters/orderFormatter";
+import {
+  OrderStatusColor,
+  OrderStatusName,
+} from "../../../utils/formatters/orderFormatter";
 import { Order } from "../../../types/order/orderTypes";
 import BackLabel from "../../common/BackLabel";
 import { Link } from "@tanstack/react-router";
@@ -31,16 +35,6 @@ const StyledTableCell = styled(TableCell)({
     backgroundColor: "#ffffff",
   },
 });
-
-const stautsColors = [
-  "#FFE082",
-  "#FFCC80",
-  "#90CAF9",
-  "#A5D6A7",
-  "#EF9A9A",
-  "#E0E0E0",
-  "#CE93D8",
-];
 
 export default function OrdersTable({ orders }: Props) {
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
@@ -127,9 +121,11 @@ export default function OrdersTable({ orders }: Props) {
                 <StyledTableCell>{order.order_date}</StyledTableCell>
                 <StyledTableCell>{order.total_price}€</StyledTableCell>
                 <StyledTableCell>
-                  <BackLabel backgroundColor={stautsColors[order.status]}>
-                    {OrderStatusName[order.status]}
-                  </BackLabel>
+                  <Box sx={{ display: "flex" }}>
+                    <BackLabel backgroundColor={OrderStatusColor[order.status]}>
+                      {OrderStatusName[order.status]}
+                    </BackLabel>
+                  </Box>
                 </StyledTableCell>
                 <StyledTableCell>{order.ticket}</StyledTableCell>
                 <StyledTableCell>

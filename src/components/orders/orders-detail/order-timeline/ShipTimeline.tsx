@@ -7,9 +7,9 @@ import {
   TimelineOppositeContent,
   TimelineSeparator,
 } from "@mui/lab";
-import ElementBox from "../../common/ElementBox";
+import ElementBox from "../../../common/ElementBox";
 import { styled } from "@mui/material";
-import ElementBoxTitle from "../../common/ElementBoxTitle";
+import ElementBoxTitle from "../../../common/ElementBoxTitle";
 
 const StyledTimelineOppositeContent = styled(TimelineOppositeContent)({
   minWidth: "95px",

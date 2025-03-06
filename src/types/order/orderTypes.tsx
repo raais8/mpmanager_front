@@ -51,5 +51,6 @@ export type Order = {
   package_quantity: number;
   weight: number;
   order_items: OrderItem[];
+  notes: string;
   updated_at: string;
 };

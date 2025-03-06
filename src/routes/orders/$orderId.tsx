@@ -1,12 +1,11 @@
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import { getOrder } from "../../services/api/orders";
-import OrderIdBox from "../../components/orders/orders-detail/OrderIdBox";
 import { Grid2, Stack } from "@mui/material";
-import OrderSourcerBox from "../../components/orders/orders-detail/OrderSourceBox";
-import OrderItemsBox from "../../components/orders/orders-detail/OrderItemsBox";
-import ShipTimeline from "../../components/orders/orders-detail/ShipTimeline";
-import DetailFieldsBox from "../../components/orders/orders-detail/DetailFieldsBox";
-import OrderNotesBox from "../../components/orders/orders-detail/OrderNotesBox";
+import ShipTimeline from "../../components/orders/orders-detail/order-timeline/ShipTimeline";
+import ItemsBox from "../../components/orders/orders-detail/order-items/ItemsBox";
+import DetailsBox from "../../components/orders/orders-detail/order-details/DetailsBox";
+import NotesBox from "../../components/orders/orders-detail/order-notes/NotesBox";
+import DetailsHeader from "../../components/orders/orders-detail/order-header/DetailsHeader.";
 
 export const Route = createFileRoute("/orders/$orderId")({
   loader: ({ params }) => getOrder(Number(params.orderId)),
@@ -18,19 +17,17 @@ function RouteComponent() {
 
   return (
     <>
-      <Grid2 container spacing={2}>
-        <OrderSourcerBox
-          marketplaceLogo={order.marketplace.logo_url}
-          country={order.customer.bill_country}
-        />
-        <OrderIdBox>{order.order_id}</OrderIdBox>
-      </Grid2>
+      <DetailsHeader
+        orderId={order.order_id}
+        marketplace={order.marketplace}
+        country={order.customer.bill_country}
+      />
       <Grid2 container spacing={2}>
         <Grid2 size={10}>
           <Stack>
-            <OrderItemsBox items={order.order_items} />
+            <ItemsBox items={order.order_items} />
             <Grid2 container spacing={2}>
-              <DetailFieldsBox
+              <DetailsBox
                 title="General"
                 details={[
                   { title: "Order ID", value: order.order_id },
@@ -41,7 +38,7 @@ function RouteComponent() {
                   { title: "Carrier", value: order.carrier.name },
                 ]}
               />
-              <DetailFieldsBox
+              <DetailsBox
                 title="Billing"
                 details={[
                   { title: "First Name", value: order.customer.bill_firstname },
@@ -55,7 +52,7 @@ function RouteComponent() {
                   { title: "Country", value: order.customer.bill_country },
                 ]}
               />
-              <DetailFieldsBox
+              <DetailsBox
                 title="Shipping"
                 details={[
                   { title: "First Name", value: order.customer.ship_firstname },
@@ -75,7 +72,7 @@ function RouteComponent() {
         <Grid2 size={2}>
           <Stack>
             <ShipTimeline />
-            <OrderNotesBox notes="" />
+            <NotesBox orderId={order.id} orderNotes={order.notes} />
           </Stack>
         </Grid2>
       </Grid2>

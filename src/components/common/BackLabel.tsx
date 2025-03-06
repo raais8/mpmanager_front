@@ -2,9 +2,10 @@ import { styled, Tooltip } from "@mui/material";
 import { ReactNode } from "@tanstack/react-router";
 
 const StyledLabel = styled("div")({
+  display: "flex",
   borderRadius: "0.6rem",
-  display: "inline-block",
   padding: "0.075rem 0.6rem",
+  alignItems: "center",
 });
 
 interface Props {

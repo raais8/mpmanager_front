@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { OrderItem } from "../../../types/order/orderTypes";
+import { OrderItem } from "../../../../types/order/orderTypes";
 
 interface Props {
   items: OrderItem[];

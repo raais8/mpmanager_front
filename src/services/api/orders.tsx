@@ -1,6 +1,10 @@
 import { Order } from "../../types/order/orderTypes";
 import axiosInstance from "./axiosInstance";
 
+interface UpdateOrderFields {
+  [key: string]: any;
+}
+
 export const getOrderList = async (
   page?: number,
   limit?: number,
@@ -39,6 +43,21 @@ export const getOrder = async (orderId: number) => {
     const response = await axiosInstance.get(`orders/api/order/${orderId}`);
     const order: Order = response.data;
     return order;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateOrder = async (
+  orderId: number,
+  upadtedFields: UpdateOrderFields
+) => {
+  try {
+    const response = await axiosInstance.patch(
+      `orders/api/order/${orderId}`,
+      upadtedFields
+    );
+    return response.data;
   } catch (error) {
     throw error;
   }
