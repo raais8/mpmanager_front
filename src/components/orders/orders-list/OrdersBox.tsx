@@ -9,6 +9,7 @@ import { Grid2 } from "@mui/material";
 import { getOrderList } from "../../../services/api/orders";
 import { Order } from "../../../types/order/orderTypes";
 import OrdersTablePagination from "./OrdersTablePagination ";
+import OrdersAdd from "./OrdersAdd";
 
 export default function OrdersBox() {
   const [marketplaces, setMarketplaces] = useState<Marketplace[]>([]);
@@ -20,26 +21,7 @@ export default function OrdersBox() {
   const [selectedMarketplaces, setSelectedMarketplaces] = useState<number[]>(
     []
   );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const fetchMarketplaces = async () => {
-      setIsLoading(true);
-      try {
-        const marketplaces = await getMarketplaces();
-        setMarketplaces(marketplaces);
-        setSelectedMarketplaces(
-          marketplaces.map((marketplace: Marketplace) => marketplace.id)
-        );
-      } catch (error) {
-        console.error("Error fetching marketplaces:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchMarketplaces();
-  }, []);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -62,6 +44,23 @@ export default function OrdersBox() {
 
     fetchOrders();
   }, [currentPage, ordersPerPage, searchField, selectedMarketplaces]);
+
+  useEffect(() => {
+    const fetchMarketplaces = async () => {
+      try {
+        const marketplaces = await getMarketplaces();
+        setMarketplaces(marketplaces);
+        setSelectedMarketplaces(
+          marketplaces.map((marketplace: Marketplace) => marketplace.id)
+        );
+      } catch (error) {
+        console.error("Error fetching marketplaces:", error);
+      } finally {
+      }
+    };
+
+    fetchMarketplaces();
+  }, []);
 
   const handleOnPageChange = (page: number) => {
     setCurrentPage(page);
@@ -96,11 +95,16 @@ export default function OrdersBox() {
             onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
           />
         </Grid2>
-        <Grid2 size={2}>
-          <OrdersSerach onSearch={handleSearch} />
+        <Grid2 container>
+          <Grid2 sx={{ display: "flex" }}>
+            <OrdersAdd />
+          </Grid2>
+          <Grid2 sx={{ display: "flex" }}>
+            <OrdersSerach onSearch={handleSearch} />
+          </Grid2>
         </Grid2>
       </Grid2>
-      <OrdersTable orders={orders} />
+      <OrdersTable orders={orders} isLoading={isLoading} />
       <OrdersTablePagination
         count={ordersCount}
         page={currentPage}

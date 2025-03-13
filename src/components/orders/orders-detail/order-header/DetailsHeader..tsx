@@ -22,10 +22,9 @@ export default function DetailsHeader({
   country,
 }: Props) {
   return (
-    <Box sx={{ marginBottom: "1rem" }}>
+    <Box sx={{ marginBottom: "0.6rem" }}>
       <Link
         to="/orders"
-        search={{}}
         style={{ display: "inline-block", textDecoration: "none" }}
       >
         <Box display="flex" alignItems="center">
@@ -35,7 +34,7 @@ export default function DetailsHeader({
           </Typography>
         </Box>
       </Link>
-      <Grid2 container spacing={2} sx={{ alignItems: "center" }}>
+      <Grid2 container spacing={1} sx={{ alignItems: "center" }}>
         <Typography variant="h5" sx={{ fontWeight: 800 }}>
           #{orderId}
         </Typography>

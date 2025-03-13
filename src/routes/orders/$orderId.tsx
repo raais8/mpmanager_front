@@ -6,6 +6,10 @@ import ItemsBox from "../../components/orders/orders-detail/order-items/ItemsBox
 import DetailsBox from "../../components/orders/orders-detail/order-details/DetailsBox";
 import NotesBox from "../../components/orders/orders-detail/order-notes/NotesBox";
 import DetailsHeader from "../../components/orders/orders-detail/order-header/DetailsHeader.";
+import {
+  CountryCodeName,
+  OrderStatusName,
+} from "../../utils/formatters/orderFormatter";
 
 export const Route = createFileRoute("/orders/$orderId")({
   loader: ({ params }) => getOrder(Number(params.orderId)),
@@ -32,7 +36,7 @@ function RouteComponent() {
                 details={[
                   { title: "Order ID", value: order.order_id },
                   { title: "Marketplace", value: order.marketplace.name },
-                  { title: "Status", value: order.status },
+                  { title: "Status", value: OrderStatusName[order.status] },
                   { title: "Order Date", value: order.order_date },
                   { title: "Total Price", value: order.total_price },
                   { title: "Carrier", value: order.carrier.name },
@@ -49,7 +53,10 @@ function RouteComponent() {
                   { title: "Address", value: order.customer.bill_address },
                   { title: "City", value: order.customer.bill_city },
                   { title: "Zip Code", value: order.customer.bill_zipcode },
-                  { title: "Country", value: order.customer.bill_country },
+                  {
+                    title: "Country",
+                    value: CountryCodeName[order.customer.bill_country],
+                  },
                 ]}
               />
               <DetailsBox
@@ -63,7 +70,10 @@ function RouteComponent() {
                   { title: "Address", value: order.customer.ship_address },
                   { title: "City", value: order.customer.ship_city },
                   { title: "Zip Code", value: order.customer.ship_zipcode },
-                  { title: "Country", value: order.customer.ship_country },
+                  {
+                    title: "Country",
+                    value: CountryCodeName[order.customer.ship_country],
+                  },
                 ]}
               />
             </Grid2>

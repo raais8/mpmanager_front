@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  CircularProgress,
   styled,
   Table,
   TableBody,
@@ -24,6 +25,7 @@ import Flag from "../../common/Flag";
 
 interface Props {
   orders: Order[];
+  isLoading: boolean;
 }
 
 const StyledTableCell = styled(TableCell)({
@@ -36,7 +38,7 @@ const StyledTableCell = styled(TableCell)({
   },
 });
 
-export default function OrdersTable({ orders }: Props) {
+export default function OrdersTable({ orders, isLoading }: Props) {
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
   const allSelectedOrders =
     selectedOrders.length === orders.length && orders.length > 0;
@@ -95,53 +97,80 @@ export default function OrdersTable({ orders }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <StyledTableCell padding="checkbox">
-                  <Checkbox
-                    onChange={(event) => handleChangeSelection(event, order.id)}
-                    checked={selectedOrders.includes(order.id)}
-                  />
-                </StyledTableCell>
-                <StyledTableCell
-                  sx={{ paddingTop: "0.6rem", paddingBottom: "0.1rem" }}
-                >
-                  <img
-                    src={order.marketplace.logo_url}
-                    style={{ height: "24px" }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell>
-                  <Flag country={order.customer.bill_country} size={22} />
-                </StyledTableCell>
-                <StyledTableCell>{order.order_id}</StyledTableCell>
-                <StyledTableCell>
-                  {order.customer.bill_firstname} {order.customer.bill_lastname}
-                </StyledTableCell>
-                <StyledTableCell>{order.order_date}</StyledTableCell>
-                <StyledTableCell>{order.total_price}€</StyledTableCell>
-                <StyledTableCell>
-                  <Box sx={{ display: "flex" }}>
-                    <BackLabel backgroundColor={OrderStatusColor[order.status]}>
-                      {OrderStatusName[order.status]}
-                    </BackLabel>
-                  </Box>
-                </StyledTableCell>
-                <StyledTableCell>{order.ticket}</StyledTableCell>
-                <StyledTableCell>
-                  <Link
-                    to="/orders/$orderId"
-                    params={{ orderId: String(order.id) }}
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={10} align="center">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100px",
+                    }}
                   >
-                    <Tooltip title={`View ${order.order_id}`}>
-                      <VisibilityIcon
-                        sx={{ height: "22px", color: "rgba(0, 0, 0, 0.87)" }}
-                      />
-                    </Tooltip>
-                  </Link>
-                </StyledTableCell>
+                    <CircularProgress />
+                  </Box>
+                </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              <>
+                {orders.map((order) => (
+                  <TableRow key={order.id}>
+                    <StyledTableCell padding="checkbox">
+                      <Checkbox
+                        onChange={(event) =>
+                          handleChangeSelection(event, order.id)
+                        }
+                        checked={selectedOrders.includes(order.id)}
+                      />
+                    </StyledTableCell>
+                    <StyledTableCell
+                      sx={{ paddingTop: "0.6rem", paddingBottom: "0.1rem" }}
+                    >
+                      <img
+                        src={order.marketplace.logo_url}
+                        style={{ height: "24px" }}
+                      />
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Flag country={order.customer.bill_country} size={22} />
+                    </StyledTableCell>
+                    <StyledTableCell>{order.order_id}</StyledTableCell>
+                    <StyledTableCell>
+                      {order.customer.bill_firstname}{" "}
+                      {order.customer.bill_lastname}
+                    </StyledTableCell>
+                    <StyledTableCell>{order.order_date}</StyledTableCell>
+                    <StyledTableCell>{order.total_price}€</StyledTableCell>
+                    <StyledTableCell>
+                      <Box sx={{ display: "flex" }}>
+                        <BackLabel
+                          backgroundColor={OrderStatusColor[order.status]}
+                        >
+                          {OrderStatusName[order.status]}
+                        </BackLabel>
+                      </Box>
+                    </StyledTableCell>
+                    <StyledTableCell>{order.ticket}</StyledTableCell>
+                    <StyledTableCell>
+                      <Link
+                        to="/orders/$orderId"
+                        params={{ orderId: String(order.id) }}
+                      >
+                        <Tooltip title={`View ${order.order_id}`}>
+                          <VisibilityIcon
+                            sx={{
+                              height: "22px",
+                              color: "rgba(0, 0, 0, 0.87)",
+                            }}
+                          />
+                        </Tooltip>
+                      </Link>
+                    </StyledTableCell>
+                  </TableRow>
+                ))}
+              </>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
