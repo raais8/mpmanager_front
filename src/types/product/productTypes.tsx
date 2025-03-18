@@ -1,16 +1,12 @@
-export type Product = {
-  id: number;
-  name: string;
-  sku: string;
-  reference: string;
-  price: number;
-  stock: number;
-  image: string;
-  parent: number;
-};
+import { z } from "zod";
+import {
+  marketplaceProductSchema,
+  productChildSchema,
+  productSchema,
+} from "./productSchemas";
 
-export type MarketplaceProduct = {
-  id: number;
-  product: Product;
-  marketplace: number;
-};
+export type ProductChild = z.infer<typeof productChildSchema>;
+
+export type Product = z.infer<typeof productSchema>;
+
+export type MarketplaceProduct = z.infer<typeof marketplaceProductSchema>;

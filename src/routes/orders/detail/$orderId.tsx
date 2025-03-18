@@ -1,23 +1,23 @@
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { getOrder } from "../../services/api/orders";
+import { getOrder } from "../../../services/api/orders";
 import { Grid2, Stack } from "@mui/material";
-import ShipTimeline from "../../components/orders/orders-detail/order-timeline/ShipTimeline";
-import ItemsBox from "../../components/orders/orders-detail/order-items/ItemsBox";
-import DetailsBox from "../../components/orders/orders-detail/order-details/DetailsBox";
-import NotesBox from "../../components/orders/orders-detail/order-notes/NotesBox";
-import DetailsHeader from "../../components/orders/orders-detail/order-header/DetailsHeader.";
+import ShipTimeline from "../../../components/orders/orders-detail/order-timeline/ShipTimeline";
+import ItemsBox from "../../../components/orders/orders-detail/order-items/ItemsBox";
+import DetailsBox from "../../../components/orders/orders-detail/order-details/DetailsBox";
+import NotesBox from "../../../components/orders/orders-detail/order-notes/NotesBox";
+import DetailsHeader from "../../../components/orders/orders-detail/order-header/DetailsHeader.";
 import {
   CountryCodeName,
   OrderStatusName,
-} from "../../utils/formatters/orderFormatter";
+} from "../../../utils/formatters/orderFormatter";
 
-export const Route = createFileRoute("/orders/$orderId")({
+export const Route = createFileRoute("/orders/detail/$orderId")({
   loader: ({ params }) => getOrder(Number(params.orderId)),
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const order = useLoaderData({ from: "/orders/$orderId" });
+  const order = useLoaderData({ from: "/orders/detail/$orderId" });
 
   return (
     <>

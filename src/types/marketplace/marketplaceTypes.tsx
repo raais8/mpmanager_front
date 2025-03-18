@@ -1,6 +1,4 @@
-export type Marketplace = {
-  id: number;
-  name: string;
-  logo_url: string;
-  color: string;
-};
+import { z } from "zod";
+import { marketplaceSchema } from "./marketplaceSchemas";
+
+export type Marketplace = z.infer<typeof marketplaceSchema>;

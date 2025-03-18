@@ -49,7 +49,7 @@ export default function ItemsTable({ items }: Props) {
           <TableRow>
             <StyledTableCell width="5%"></StyledTableCell>
             <StyledTableCell width="10%">SKU</StyledTableCell>
-            <StyledTableCell width="40%">Description</StyledTableCell>
+            <StyledTableCell width="40%">Name</StyledTableCell>
             <StyledTableCell align="right" width="15%">
               Quantity
             </StyledTableCell>

@@ -1,34 +1,21 @@
-import { FormControl, TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
+import { forwardRef } from "react";
 
-interface Props {
-  id: string;
-  name: string;
-  value: string;
-  onChange: (value: string) => void;
-  disabled?: boolean;
-}
+type Props = TextFieldProps & {
+  error?: string;
+};
 
-export default function CustomTextField({
-  id,
-  name,
-  value,
-  onChange,
-  disabled = false,
-}: Props) {
-  return (
-    <FormControl
-      sx={{
-        display: "flex",
-      }}
-    >
+const CustomTextField = forwardRef<HTMLInputElement, Props>(
+  ({ ...props }, ref) => {
+    return (
       <TextField
-        id={`${id}-textfield`}
+        {...props}
+        inputRef={ref}
+        error
+        helperText="Error"
         variant="filled"
         size="small"
-        label={name}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        disabled={disabled}
+        sx={{ display: "flex" }}
         slotProps={{
           input: {
             disableUnderline: true,
@@ -36,6 +23,8 @@ export default function CustomTextField({
           },
         }}
       />
-    </FormControl>
-  );
-}
+    );
+  }
+);
+
+export default CustomTextField;

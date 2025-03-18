@@ -154,7 +154,7 @@ export default function OrdersTable({ orders, isLoading }: Props) {
                     <StyledTableCell>{order.ticket}</StyledTableCell>
                     <StyledTableCell>
                       <Link
-                        to="/orders/$orderId"
+                        to="/orders/detail/$orderId"
                         params={{ orderId: String(order.id) }}
                       >
                         <Tooltip title={`View ${order.order_id}`}>

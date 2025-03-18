@@ -11,22 +11,23 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ProductsImport } from './routes/products'
 import { Route as IndexImport } from './routes/index'
+import { Route as ProductsIndexImport } from './routes/products/index'
 import { Route as OrdersIndexImport } from './routes/orders/index'
-import { Route as OrdersOrderIdImport } from './routes/orders/$orderId'
+import { Route as OrdersCreateImport } from './routes/orders/create'
+import { Route as OrdersDetailOrderIdImport } from './routes/orders/detail/$orderId'
 
 // Create/Update Routes
-
-const ProductsRoute = ProductsImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProductsIndexRoute = ProductsIndexImport.update({
+  id: '/products/',
+  path: '/products/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -36,9 +37,15 @@ const OrdersIndexRoute = OrdersIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const OrdersOrderIdRoute = OrdersOrderIdImport.update({
-  id: '/orders/$orderId',
-  path: '/orders/$orderId',
+const OrdersCreateRoute = OrdersCreateImport.update({
+  id: '/orders/create',
+  path: '/orders/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const OrdersDetailOrderIdRoute = OrdersDetailOrderIdImport.update({
+  id: '/orders/detail/$orderId',
+  path: '/orders/detail/$orderId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,18 +60,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsImport
-      parentRoute: typeof rootRoute
-    }
-    '/orders/$orderId': {
-      id: '/orders/$orderId'
-      path: '/orders/$orderId'
-      fullPath: '/orders/$orderId'
-      preLoaderRoute: typeof OrdersOrderIdImport
+    '/orders/create': {
+      id: '/orders/create'
+      path: '/orders/create'
+      fullPath: '/orders/create'
+      preLoaderRoute: typeof OrdersCreateImport
       parentRoute: typeof rootRoute
     }
     '/orders/': {
@@ -74,6 +74,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrdersIndexImport
       parentRoute: typeof rootRoute
     }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/orders/detail/$orderId': {
+      id: '/orders/detail/$orderId'
+      path: '/orders/detail/$orderId'
+      fullPath: '/orders/detail/$orderId'
+      preLoaderRoute: typeof OrdersDetailOrderIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -81,47 +95,68 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/products': typeof ProductsRoute
-  '/orders/$orderId': typeof OrdersOrderIdRoute
+  '/orders/create': typeof OrdersCreateRoute
   '/orders': typeof OrdersIndexRoute
+  '/products': typeof ProductsIndexRoute
+  '/orders/detail/$orderId': typeof OrdersDetailOrderIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/products': typeof ProductsRoute
-  '/orders/$orderId': typeof OrdersOrderIdRoute
+  '/orders/create': typeof OrdersCreateRoute
   '/orders': typeof OrdersIndexRoute
+  '/products': typeof ProductsIndexRoute
+  '/orders/detail/$orderId': typeof OrdersDetailOrderIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/products': typeof ProductsRoute
-  '/orders/$orderId': typeof OrdersOrderIdRoute
+  '/orders/create': typeof OrdersCreateRoute
   '/orders/': typeof OrdersIndexRoute
+  '/products/': typeof ProductsIndexRoute
+  '/orders/detail/$orderId': typeof OrdersDetailOrderIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/products' | '/orders/$orderId' | '/orders'
+  fullPaths:
+    | '/'
+    | '/orders/create'
+    | '/orders'
+    | '/products'
+    | '/orders/detail/$orderId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/products' | '/orders/$orderId' | '/orders'
-  id: '__root__' | '/' | '/products' | '/orders/$orderId' | '/orders/'
+  to:
+    | '/'
+    | '/orders/create'
+    | '/orders'
+    | '/products'
+    | '/orders/detail/$orderId'
+  id:
+    | '__root__'
+    | '/'
+    | '/orders/create'
+    | '/orders/'
+    | '/products/'
+    | '/orders/detail/$orderId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProductsRoute: typeof ProductsRoute
-  OrdersOrderIdRoute: typeof OrdersOrderIdRoute
+  OrdersCreateRoute: typeof OrdersCreateRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
+  OrdersDetailOrderIdRoute: typeof OrdersDetailOrderIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProductsRoute: ProductsRoute,
-  OrdersOrderIdRoute: OrdersOrderIdRoute,
+  OrdersCreateRoute: OrdersCreateRoute,
   OrdersIndexRoute: OrdersIndexRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
+  OrdersDetailOrderIdRoute: OrdersDetailOrderIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +170,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/products",
-        "/orders/$orderId",
-        "/orders/"
+        "/orders/create",
+        "/orders/",
+        "/products/",
+        "/orders/detail/$orderId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/products": {
-      "filePath": "products.tsx"
-    },
-    "/orders/$orderId": {
-      "filePath": "orders/$orderId.tsx"
+    "/orders/create": {
+      "filePath": "orders/create.tsx"
     },
     "/orders/": {
       "filePath": "orders/index.tsx"
+    },
+    "/products/": {
+      "filePath": "products/index.tsx"
+    },
+    "/orders/detail/$orderId": {
+      "filePath": "orders/detail/$orderId.tsx"
     }
   }
 }
