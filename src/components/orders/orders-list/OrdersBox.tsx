@@ -1,16 +1,16 @@
 import ElementBox from "../../common/ElementBox";
 import OrdersTable from "./OrdersTable";
-import MarketplaceFilter from "./MarketplaceFilter";
 import { useEffect, useState } from "react";
 import { Marketplace } from "../../../types/marketplace/marketplaceTypes";
 import { getMarketplaces } from "../../../services/api/marketplace";
-import OrdersSerach from "./OrdersSearch";
 import { Grid2 } from "@mui/material";
 import { getOrderList } from "../../../services/api/orders";
 import { Order } from "../../../types/order/orderTypes";
 import OrdersTablePagination from "./OrdersTablePagination ";
 import OrdersAdd from "./OrdersAdd";
 import { useQuery } from "@tanstack/react-query";
+import TableMarketplaceFilter from "../../common/tables/TableMarketplaceFilter";
+import TableSerach from "../../common/tables/TableSearch";
 
 export default function OrdersBox() {
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -43,8 +43,8 @@ export default function OrdersBox() {
     ],
     queryFn: () =>
       getOrderList(
-        searchField ? undefined : currentPage + 1,
-        searchField ? undefined : ordersPerPage,
+        currentPage + 1,
+        ordersPerPage,
         searchField,
         selectedMarketplaces.toString()
       ),
@@ -88,11 +88,11 @@ export default function OrdersBox() {
         justifyContent={"space-between"}
         sx={{ padding: "0.6rem" }}
       >
-        <Grid2 size={2}>
+        <Grid2 size={3}>
           {isPendingMarketplaces ? (
             <div>Loading...</div>
           ) : (
-            <MarketplaceFilter
+            <TableMarketplaceFilter
               marketplaces={marketplaces}
               onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
             />
@@ -103,14 +103,14 @@ export default function OrdersBox() {
             <OrdersAdd />
           </Grid2>
           <Grid2 sx={{ display: "flex" }}>
-            <OrdersSerach onSearch={handleSearch} />
+            <TableSerach onSearch={handleSearch} />
           </Grid2>
         </Grid2>
       </Grid2>
       <OrdersTable orders={orders} isLoading={isLoadingOrders} />
       <OrdersTablePagination
         count={ordersCount}
-        page={currentPage}
+        page={!ordersCount || ordersCount <= 0 ? 0 : currentPage}
         rowsPerPage={ordersPerPage}
         onPageChange={handleOnPageChange}
         onRowsPerPageChange={handleOnRowsPerPageChange}

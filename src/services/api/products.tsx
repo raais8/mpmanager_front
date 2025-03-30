@@ -1,10 +1,15 @@
 import { Product, ProductChild } from "../../types/product/productTypes";
 import axiosInstance from "./axiosInstance";
 
-export const getProductList = async (page?: number, limit?: number) => {
+export const getProductList = async (
+  page?: number,
+  limit?: number,
+  search?: string,
+  marketplace?: string
+) => {
   try {
     const response = await axiosInstance.get("products/api/product-list", {
-      params: { page, limit },
+      params: { page, limit, search, marketplace },
     });
     const productsCount = response.data["count"];
     const products = response.data["results"].map((item: Product) => ({

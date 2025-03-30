@@ -10,12 +10,14 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Product } from "../../../types/product/productTypes";
+import { Product } from "../../../../types/product/productTypes";
 import ProductsTableCollapsibleRow from "./ProductsTableCollapisbleRow";
 import ProductsTableRow from "./ProductsTableRow";
+import { Marketplace } from "../../../../types/marketplace/marketplaceTypes";
 
 interface Props {
   products: Product[];
+  marketplaces: Marketplace[];
   isLoading: boolean;
 }
 
@@ -29,17 +31,21 @@ const StyledTableCell = styled(TableCell)({
   },
 });
 
-export default function ProductsTable({ products, isLoading }: Props) {
+export default function ProductsTable({
+  products,
+  marketplaces,
+  isLoading,
+}: Props) {
   return (
     <TableContainer>
       <Table size="small">
-        <TableHead>
+        <TableHead sx={{ borderTop: "1px solid rgba(224, 224, 224, 1)" }}>
           <TableRow>
-            <StyledTableCell width="3%"></StyledTableCell>
-            <StyledTableCell width="10%"></StyledTableCell>
-            <StyledTableCell width="15%">SKU</StyledTableCell>
+            <StyledTableCell width="5%"></StyledTableCell>
+            <StyledTableCell width="5%"></StyledTableCell>
+            <StyledTableCell width="10%">SKU</StyledTableCell>
             <StyledTableCell width="40%">Name</StyledTableCell>
-            <StyledTableCell width="32%">Marketplaces</StyledTableCell>
+            <StyledTableCell width="40%">Marketplaces</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -64,9 +70,14 @@ export default function ProductsTable({ products, isLoading }: Props) {
                 <ProductsTableCollapsibleRow
                   key={product.id}
                   product={product}
+                  marketplaces={marketplaces}
                 />
               ) : (
-                <ProductsTableRow key={product.id} product={product} />
+                <ProductsTableRow
+                  key={product.id}
+                  product={product}
+                  marketplaces={marketplaces}
+                />
               )
             )
           )}

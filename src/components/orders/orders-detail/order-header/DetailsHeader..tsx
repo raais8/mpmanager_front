@@ -1,26 +1,15 @@
-import { Box, Grid2, Typography } from "@mui/material";
-import { Country } from "../../../../types/order/orderEnums";
+import { Avatar, Box, Chip, Grid2, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import BackLabel from "../../../common/BackLabel";
-import Flag from "../../../common/Flag";
 import { Marketplace } from "../../../../types/marketplace/marketplaceTypes";
-import {
-  CountryCodeColor,
-  CountryCodeName,
-} from "../../../../utils/formatters/orderFormatter";
+import { CountryCodeAbbreviation } from "../../../../utils/formatters/orderFormatter";
 import { Link } from "@tanstack/react-router";
 
 interface Props {
   orderId: string;
   marketplace: Marketplace;
-  country: Country;
 }
 
-export default function DetailsHeader({
-  orderId,
-  marketplace,
-  country,
-}: Props) {
+export default function DetailsHeader({ orderId, marketplace }: Props) {
   return (
     <Box sx={{ marginBottom: "0.6rem" }}>
       <Link
@@ -38,25 +27,12 @@ export default function DetailsHeader({
         <Typography variant="h5" sx={{ fontWeight: 800 }}>
           #{orderId}
         </Typography>
-        <BackLabel backgroundColor={marketplace.color}>
-          <img
-            src={marketplace.logo_url}
-            style={{ height: "18px", marginRight: "0.6rem" }}
-          />
-          {marketplace.name}
-        </BackLabel>
-        <BackLabel backgroundColor={CountryCodeColor[country]}>
-          <Box
-            sx={{
-              display: "flex",
-              alignContent: "center",
-              marginRight: "0.6rem",
-            }}
-          >
-            <Flag country={country} size={18} />
-          </Box>
-          {CountryCodeName[country]}
-        </BackLabel>
+        <Chip
+          size="small"
+          label={`${marketplace.name} ${CountryCodeAbbreviation[marketplace.country].toUpperCase()}`}
+          avatar={<Avatar src={marketplace.logo_url} />}
+          sx={{ backgroundColor: `${marketplace.color}` }}
+        />
       </Grid2>
     </Box>
   );

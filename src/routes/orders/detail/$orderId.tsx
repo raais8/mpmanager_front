@@ -21,11 +21,7 @@ function RouteComponent() {
 
   return (
     <>
-      <DetailsHeader
-        orderId={order.order_id}
-        marketplace={order.marketplace}
-        country={order.customer.bill_country}
-      />
+      <DetailsHeader orderId={order.order_id} marketplace={order.marketplace} />
       <Grid2 container spacing={2}>
         <Grid2 size={10}>
           <Stack>

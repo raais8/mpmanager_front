@@ -12,10 +12,9 @@ const StyledSearch = styled("form")({
   backgroundColor: "#efefef",
   borderRadius: "0.6rem",
   paddingLeft: "14px",
-  maxHeight: "2rem",
 });
 
-export default function OrdersSerach({ onSearch }: Props) {
+export default function TableSerach({ onSearch }: Props) {
   const [searchField, setSearchField] = useState<string>("");
 
   const handleSearch = () => {
