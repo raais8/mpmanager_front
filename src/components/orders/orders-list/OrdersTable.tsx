@@ -80,7 +80,7 @@ export default function OrdersTable({ orders, isLoading }: Props) {
               <StyledTableCell sx={{ width: "13%" }}>
                 Marketplace
               </StyledTableCell>
-              <StyledTableCell sx={{ width: "20%" }}>
+              <StyledTableCell sx={{ width: "15%" }}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   Order ID
                   <VisibilityIcon
@@ -91,7 +91,7 @@ export default function OrdersTable({ orders, isLoading }: Props) {
                   />
                 </Box>
               </StyledTableCell>
-              <StyledTableCell sx={{ width: "20%" }}>
+              <StyledTableCell sx={{ width: "15%" }}>
                 Customer Name
               </StyledTableCell>
               <StyledTableCell sx={{ width: "20%" }}>

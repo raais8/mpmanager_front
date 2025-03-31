@@ -94,6 +94,7 @@ export default function OrdersBox() {
           ) : (
             <TableMarketplaceFilter
               marketplaces={marketplaces}
+              selectedMarketplaces={selectedMarketplaces}
               onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
             />
           )}

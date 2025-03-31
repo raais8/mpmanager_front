@@ -10,6 +10,7 @@ import { Marketplace } from "../../../types/marketplace/marketplaceTypes";
 import CustomTablePagination from "../../common/tables/CustomTablePagination";
 import TableMarketplaceFilter from "../../common/tables/TableMarketplaceFilter";
 import TableSerach from "../../common/tables/TableSearch";
+import { Country } from "../../../types/order/orderEnums";
 
 export default function ProductsBox() {
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -50,9 +51,17 @@ export default function ProductsBox() {
 
   useEffect(() => {
     if (marketplaces.length > 0) {
-      setSelectedMarketplaces(
-        marketplaces.map((marketplace) => marketplace.id)
-      );
+      const none: Marketplace = {
+        id: 0,
+        name: "None",
+        country: Country.ES,
+        logo_url: "",
+        color: "#000000",
+      };
+      marketplaces.push(none);
+      setSelectedMarketplaces(() => {
+        return marketplaces.map((marketplace) => marketplace.id);
+      });
     }
   }, [marketplaces]);
 
@@ -87,6 +96,7 @@ export default function ProductsBox() {
           <Grid2 size={3}>
             <TableMarketplaceFilter
               marketplaces={marketplaces}
+              selectedMarketplaces={selectedMarketplaces}
               onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
             />
           </Grid2>

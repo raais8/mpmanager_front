@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Marketplace } from "../../../types/marketplace/marketplaceTypes";
 import {
   Select,
@@ -15,6 +14,7 @@ import { CountryCodeAbbreviation } from "../../../utils/formatters/orderFormatte
 
 interface Props {
   marketplaces: Marketplace[];
+  selectedMarketplaces: number[];
   onMarketplaceSelectionChange: (value: number[]) => void;
 }
 
@@ -29,23 +29,11 @@ const StyledSelect = styled(Select<number[]>)({
 
 export default function MarketplaceFilter({
   marketplaces,
+  selectedMarketplaces,
   onMarketplaceSelectionChange,
 }: Props) {
-  const [selectedMarketplaces, setSelectedMarketplaces] = useState<number[]>(
-    []
-  );
-
-  useEffect(() => {
-    if (marketplaces.length > 0) {
-      setSelectedMarketplaces(
-        marketplaces.map((marketplace) => marketplace.id)
-      );
-    }
-  }, [marketplaces]);
-
   const handleChange = (event: SelectChangeEvent<number[]>) => {
     const value = event.target.value as number[];
-    setSelectedMarketplaces(value);
     onMarketplaceSelectionChange(value);
   };
 
@@ -64,15 +52,18 @@ export default function MarketplaceFilter({
         const label = `${marketplace?.name} ${CountryCodeAbbreviation[marketplace?.country].toUpperCase()}`;
         chars += label.length;
         if (chars < 22) {
-          chips.push(
-            <Chip
-              key={value}
-              size="small"
-              label={label}
-              avatar={<Avatar src={marketplace.logo_url} />}
-              sx={{ backgroundColor: `${marketplace.color}` }}
-            />
-          );
+          const chip =
+            marketplace.id === 0 ? (
+              <Chip size="small" label="None" />
+            ) : (
+              <Chip
+                size="small"
+                label={`${marketplace.name} ${CountryCodeAbbreviation[marketplace.country].toUpperCase()}`}
+                avatar={<Avatar src={marketplace.logo_url} />}
+                sx={{ backgroundColor: `${marketplace.color}` }}
+              />
+            );
+          chips.push(chip);
           return false;
         } else {
           chips.push(
@@ -109,12 +100,16 @@ export default function MarketplaceFilter({
             sx={{ padding: "0", marginRight: "1rem" }}
           />
           <ListItemText>
-            <Chip
-              size="small"
-              label={`${marketplace.name} ${CountryCodeAbbreviation[marketplace.country].toUpperCase()}`}
-              avatar={<Avatar src={marketplace.logo_url} />}
-              sx={{ backgroundColor: `${marketplace.color}` }}
-            />
+            {marketplace.id === 0 ? (
+              <Chip size="small" label="None" />
+            ) : (
+              <Chip
+                size="small"
+                label={`${marketplace.name} ${CountryCodeAbbreviation[marketplace.country].toUpperCase()}`}
+                avatar={<Avatar src={marketplace.logo_url} />}
+                sx={{ backgroundColor: `${marketplace.color}` }}
+              />
+            )}
           </ListItemText>
         </MenuItem>
       ))}
