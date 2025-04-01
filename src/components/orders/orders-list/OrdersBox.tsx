@@ -6,11 +6,11 @@ import { getMarketplaces } from "../../../services/api/marketplace";
 import { Grid2 } from "@mui/material";
 import { getOrderList } from "../../../services/api/orders";
 import { Order } from "../../../types/order/orderTypes";
-import OrdersTablePagination from "./OrdersTablePagination ";
 import OrdersAdd from "./OrdersAdd";
 import { useQuery } from "@tanstack/react-query";
 import TableMarketplaceFilter from "../../common/tables/TableMarketplaceFilter";
 import TableSerach from "../../common/tables/TableSearch";
+import CustomTablePagination from "../../common/tables/CustomTablePagination";
 
 export default function OrdersBox() {
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -109,7 +109,7 @@ export default function OrdersBox() {
         </Grid2>
       </Grid2>
       <OrdersTable orders={orders} isLoading={isLoadingOrders} />
-      <OrdersTablePagination
+      <CustomTablePagination
         count={ordersCount}
         page={!ordersCount || ordersCount <= 0 ? 0 : currentPage}
         rowsPerPage={ordersPerPage}
