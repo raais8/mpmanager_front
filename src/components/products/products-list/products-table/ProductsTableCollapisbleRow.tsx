@@ -43,6 +43,35 @@ export default function ProductsTableCollapsibleRow({
 }: Props) {
   const [collapsed, setCollapsed] = useState(true);
 
+  const renderParentMarketplaces = () => {
+    let parentMarketplaces: number[] = [];
+    let chips: JSX.Element[] = [];
+
+    product.children.map((child) => {
+      child.marketplaces.map((marketplace) => {
+        if (!parentMarketplaces.includes(marketplace.id)) {
+          parentMarketplaces.push(marketplace.id);
+          const marketplaceData = marketplaces.find(
+            (mp) => mp.id === marketplace.id
+          );
+          if (marketplaceData) {
+            chips.push(
+              <Chip
+                key={marketplace.id}
+                size="small"
+                label={`${marketplaceData.name} ${CountryCodeAbbreviation[marketplaceData.country].toUpperCase()}`}
+                avatar={<Avatar src={marketplaceData.logo_url} />}
+                sx={{ backgroundColor: `${marketplaceData.color}` }}
+              />
+            );
+          }
+        }
+      });
+    });
+
+    return chips;
+  };
+
   return (
     <>
       <TableRow>
@@ -60,18 +89,7 @@ export default function ProductsTableCollapsibleRow({
         <StyledTableCell>{product.name}</StyledTableCell>
         <StyledTableCell>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {product.marketplaces.map((marketplace) => {
-              const mp = marketplaces.find((m) => m.id === marketplace.id);
-              return mp ? (
-                <Chip
-                  key={mp.id}
-                  size="small"
-                  label={`${mp.name} ${CountryCodeAbbreviation[mp.country].toUpperCase()}`}
-                  avatar={<Avatar src={mp.logo_url} />}
-                  sx={{ backgroundColor: `${mp.color}` }}
-                />
-              ) : null;
-            })}
+            {renderParentMarketplaces()}
           </Box>
         </StyledTableCell>
       </TableRow>
