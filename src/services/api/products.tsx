@@ -43,3 +43,26 @@ export const getProductList = async (
     throw error;
   }
 };
+
+export const getProduct = async (id: number) => {
+  try {
+    const response = await axiosInstance.get(`products/api/product/${id}`);
+    const product: Product = response.data;
+    return product;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const patchProduct = async (id: number, product: Partial<Product>) => {
+  try {
+    const response = await axiosInstance.patch(
+      `products/api/product/${id}`,
+      product
+    );
+    const updatedProduct: Product = response.data;
+    return updatedProduct;
+  } catch (error) {
+    throw error;
+  }
+};

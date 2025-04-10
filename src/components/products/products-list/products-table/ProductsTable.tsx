@@ -14,6 +14,7 @@ import { Product } from "../../../../types/product/productTypes";
 import ProductsTableCollapsibleRow from "./ProductsTableCollapisbleRow";
 import ProductsTableRow from "./ProductsTableRow";
 import { Marketplace } from "../../../../types/marketplace/marketplaceTypes";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 interface Props {
   products: Product[];
@@ -43,8 +44,18 @@ export default function ProductsTable({
           <TableRow>
             <StyledTableCell width="5%"></StyledTableCell>
             <StyledTableCell width="5%"></StyledTableCell>
-            <StyledTableCell width="10%">SKU</StyledTableCell>
-            <StyledTableCell width="40%">Name</StyledTableCell>
+            <StyledTableCell width="12%">
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                SKU
+                <VisibilityIcon
+                  sx={{
+                    height: "1rem",
+                    marginLeft: "0.3rem",
+                  }}
+                />
+              </Box>
+            </StyledTableCell>
+            <StyledTableCell width="38%">Name</StyledTableCell>
             <StyledTableCell width="40%">Marketplaces</StyledTableCell>
           </TableRow>
         </TableHead>

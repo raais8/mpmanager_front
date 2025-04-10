@@ -57,6 +57,7 @@ export default function MarketplaceFilter({
               <Chip size="small" label="None" />
             ) : (
               <Chip
+                key={marketplace.id}
                 size="small"
                 label={`${marketplace.name} ${CountryCodeAbbreviation[marketplace.country].toUpperCase()}`}
                 avatar={<Avatar src={marketplace.logo_url} />}
