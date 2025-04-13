@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { marketplaceSchema } from "../marketplace/marketplaceSchemas";
 import { Country, OrderStatus, PayMethod } from "./orderEnums";
-import { marketplaceProductSchema } from "../product/productSchemas";
 
 export const customerSchema = z.object({
   id: z.number().min(0),
@@ -25,33 +23,28 @@ export const customerSchema = z.object({
   ship_country: z.nativeEnum(Country),
 });
 
-export const carrierSchema = z.object({
-  id: z.number().min(0),
-  name: z.string(),
-});
-
-export const orderItemSchema = z.object({
-  order_id: z.number().min(0),
-  quantity: z.number().min(0).int(),
-  purchase_price: z.number().min(0),
-  marketplace_product: marketplaceProductSchema,
-});
-
 export const orderSchema = z.object({
   id: z.number().min(0),
   order_id: z.string(),
-  marketplace: marketplaceSchema,
-  customer: customerSchema,
   status: z.nativeEnum(OrderStatus),
   order_date: z.string().datetime(),
   total_price: z.number().min(0),
-  carrier: carrierSchema,
   ticket: z.string(),
   ticket_refund: z.string(),
   pay_method: z.nativeEnum(PayMethod),
   package_quantity: z.number().min(0).int(),
   weight: z.number().min(0),
-  order_items: z.array(orderItemSchema),
   notes: z.string(),
   updated_at: z.string().datetime(),
+  marketplace: z.number().min(0),
+  customer: z.number().min(0),
+  carrier: z.number().min(0),
+});
+
+export const orderItemSchema = z.object({
+  id: z.number().min(0),
+  quantity: z.number().min(0).int(),
+  purchase_price: z.number().min(0),
+  order: z.number().min(0),
+  marketplace_product: z.number().min(0),
 });

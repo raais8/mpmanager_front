@@ -14,17 +14,20 @@ import {
   TableRow,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import {
   CountryCodeAbbreviation,
   OrderStatusColor,
   OrderStatusName,
 } from "../../../utils/formatters/orderFormatter";
-import { Order } from "../../../types/order/orderTypes";
+import { Customer, Order } from "../../../types/order/orderTypes";
 import { Link } from "@tanstack/react-router";
+import { Marketplace } from "../../../types/marketplace/marketplaceTypes";
 
 interface Props {
   orders: Order[];
+  marketplaces: Marketplace[];
+  customers: Customer[];
   isLoading: boolean;
 }
 
@@ -38,9 +41,30 @@ const StyledTableCell = styled(TableCell)({
   },
 });
 
-export default function OrdersTable({ orders, isLoading }: Props) {
+export default function OrdersTable({
+  orders,
+  marketplaces,
+  customers,
+  isLoading,
+}: Props) {
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
   const [isHovered, setIsHovered] = useState<number | null>(null);
+
+  const marketplaceMap = useMemo(() => {
+    const map: Record<number, Marketplace> = {};
+    marketplaces.forEach((mp) => {
+      map[mp.id] = mp;
+    });
+    return map;
+  }, [marketplaces]);
+
+  const customerMap = useMemo(() => {
+    const map: Record<number, Customer> = {};
+    customers.forEach((customer) => {
+      map[customer.id] = customer;
+    });
+    return map;
+  }, [customers]);
 
   const allSelectedOrders =
     selectedOrders.length === orders.length && orders.length > 0;
@@ -137,9 +161,15 @@ export default function OrdersTable({ orders, isLoading }: Props) {
                     <StyledTableCell>
                       <Chip
                         size="small"
-                        label={`${order.marketplace.name} ${CountryCodeAbbreviation[order.marketplace.country].toUpperCase()}`}
-                        avatar={<Avatar src={order.marketplace.logo_url} />}
-                        sx={{ backgroundColor: `${order.marketplace.color}` }}
+                        label={`${marketplaceMap[order.marketplace].name} ${CountryCodeAbbreviation[marketplaceMap[order.marketplace].country].toUpperCase()}`}
+                        avatar={
+                          <Avatar
+                            src={marketplaceMap[order.marketplace].logo_url}
+                          />
+                        }
+                        sx={{
+                          backgroundColor: `${marketplaceMap[order.marketplace].color}`,
+                        }}
                       />
                     </StyledTableCell>
                     <StyledTableCell>
@@ -175,8 +205,7 @@ export default function OrdersTable({ orders, isLoading }: Props) {
                       </Box>
                     </StyledTableCell>
                     <StyledTableCell>
-                      {order.customer.bill_firstname}{" "}
-                      {order.customer.bill_lastname}
+                      {`${customerMap[order.customer].bill_firstname} ${customerMap[order.customer].bill_lastname}`}
                     </StyledTableCell>
                     <StyledTableCell>{order.order_date}</StyledTableCell>
                     <StyledTableCell>{order.total_price}€</StyledTableCell>

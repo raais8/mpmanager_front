@@ -1,10 +1,9 @@
 import ElementBox from "../../common/ElementBox";
 import OrdersTable from "./OrdersTable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Marketplace } from "../../../types/marketplace/marketplaceTypes";
-import { getMarketplaces } from "../../../services/api/marketplace";
 import { Grid2 } from "@mui/material";
-import { getOrderList } from "../../../services/api/orders";
+import { getCustomerList, getOrderList } from "../../../services/api/orders";
 import { Order } from "../../../types/order/orderTypes";
 import OrdersAdd from "./OrdersAdd";
 import { useQuery } from "@tanstack/react-query";
@@ -12,31 +11,23 @@ import TableMarketplaceFilter from "../../common/tables/TableMarketplaceFilter";
 import TableSerach from "../../common/tables/TableSearch";
 import CustomTablePagination from "../../common/tables/CustomTablePagination";
 
-export default function OrdersBox() {
+interface Props {
+  marketplaces: Marketplace[];
+}
+
+export default function OrdersBox({ marketplaces }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [ordersPerPage, setOrdersPerPage] = useState<number>(4);
   const [searchField, setSearchField] = useState<string>("");
   const [selectedMarketplaces, setSelectedMarketplaces] = useState<number[]>(
-    []
+    marketplaces.map((marketplace) => marketplace.id)
   );
 
-  const {
-    data: marketplaces = [],
-    isPending: isPendingMarketplaces,
-    isError: isErrorMarketplaces,
-  } = useQuery<Marketplace[]>({
-    queryKey: ["marketplaces"],
-    queryFn: getMarketplaces,
-  });
-
-  const {
-    data,
-    isLoading: isLoadingOrders,
-    isError: isErrorOrders,
-  } = useQuery({
+  // Get orders
+  const { data, isPending: isPendingOrders } = useQuery({
     queryKey: [
       "orders",
-      currentPage,
+      currentPage + 1,
       ordersPerPage,
       searchField,
       selectedMarketplaces,
@@ -50,16 +41,16 @@ export default function OrdersBox() {
       ),
   });
 
-  const orders: Order[] = data?.orders || [];
-  const ordersCount = data?.ordersCount || 0;
+  const orders: Order[] = data?.orders;
+  const ordersCount = data?.ordersCount;
+  const ordersCustomers = data?.orders?.map((order: Order) => order.customer);
 
-  useEffect(() => {
-    if (marketplaces.length > 0) {
-      setSelectedMarketplaces(
-        marketplaces.map((marketplace) => marketplace.id)
-      );
-    }
-  }, [marketplaces]);
+  // Get customers
+  const { data: customers = [], isPending: isPendingCustomers } = useQuery({
+    queryKey: ["customers", ordersCustomers],
+    queryFn: () => getCustomerList(ordersCustomers),
+    enabled: !!ordersCustomers,
+  });
 
   const handleOnPageChange = (page: number) => {
     setCurrentPage(page);
@@ -76,6 +67,7 @@ export default function OrdersBox() {
   };
 
   const handleOnMarketplaceSelectionChange = (selection: number[]) => {
+    console.log(selection);
     setCurrentPage(0);
     setSelectedMarketplaces(selection);
   };
@@ -89,15 +81,11 @@ export default function OrdersBox() {
         sx={{ padding: "0.6rem" }}
       >
         <Grid2 size={3}>
-          {isPendingMarketplaces ? (
-            <div>Loading...</div>
-          ) : (
-            <TableMarketplaceFilter
-              marketplaces={marketplaces}
-              selectedMarketplaces={selectedMarketplaces}
-              onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
-            />
-          )}
+          <TableMarketplaceFilter
+            marketplaces={marketplaces}
+            selectedMarketplaces={selectedMarketplaces}
+            onMarketplaceSelectionChange={handleOnMarketplaceSelectionChange}
+          />
         </Grid2>
         <Grid2 container>
           <Grid2 sx={{ display: "flex" }}>
@@ -108,14 +96,25 @@ export default function OrdersBox() {
           </Grid2>
         </Grid2>
       </Grid2>
-      <OrdersTable orders={orders} isLoading={isLoadingOrders} />
-      <CustomTablePagination
-        count={ordersCount}
-        page={!ordersCount || ordersCount <= 0 ? 0 : currentPage}
-        rowsPerPage={ordersPerPage}
-        onPageChange={handleOnPageChange}
-        onRowsPerPageChange={handleOnRowsPerPageChange}
-      />
+      {isPendingOrders || isPendingCustomers ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <OrdersTable
+            orders={orders}
+            marketplaces={marketplaces}
+            customers={customers}
+            isLoading={isPendingOrders || isPendingCustomers}
+          />
+          <CustomTablePagination
+            count={ordersCount}
+            page={!ordersCount || ordersCount <= 0 ? 0 : currentPage}
+            rowsPerPage={ordersPerPage}
+            onPageChange={handleOnPageChange}
+            onRowsPerPageChange={handleOnRowsPerPageChange}
+          />
+        </>
+      )}
     </ElementBox>
   );
 }

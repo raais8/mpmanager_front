@@ -1,17 +1,23 @@
 import { Marketplace } from "../../types/marketplace/marketplaceTypes";
 import axiosInstance from "./axiosInstance";
 
-export const getMarketplaces = async () => {
+export const getMarketplaceList = async () => {
   try {
-    const response = await axiosInstance.get("marketplaces/api/marketplaces/");
-    const marketplaces = response.data.map((item: Marketplace) => ({
-      id: item.id,
-      name: item.name,
-      country: item.country,
-      logo_url: item.logo_url,
-      color: item.color,
-    }));
+    const response = await axiosInstance.get("marketplaces/marketplaces/");
+    const marketplaces: Marketplace[] = response.data;
     return marketplaces;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMarketplace = async (marketplaceId: number) => {
+  try {
+    const response = await axiosInstance.get(
+      `marketplaces/marketplaces/${marketplaceId}`
+    );
+    const marketplace: Marketplace = response.data;
+    return marketplace;
   } catch (error) {
     throw error;
   }

@@ -1,5 +1,9 @@
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { getOrder } from "../../../services/api/orders";
+import {
+  getCustomer,
+  getOrder,
+  getOrderItemList,
+} from "../../../services/api/orders";
 import { Grid2, Stack } from "@mui/material";
 import ShipTimeline from "../../../components/orders/orders-detail/order-timeline/ShipTimeline";
 import ItemsBox from "../../../components/orders/orders-detail/order-items/ItemsBox";
@@ -10,65 +14,74 @@ import {
   CountryCodeName,
   OrderStatusName,
 } from "../../../utils/formatters/orderFormatter";
+import { getMarketplace } from "../../../services/api/marketplace";
 
 export const Route = createFileRoute("/orders/detail/$orderId")({
-  loader: ({ params }) => getOrder(Number(params.orderId)),
+  loader: async ({ params }) => {
+    const order = await getOrder(Number(params.orderId));
+    const orderItems = await getOrderItemList(order.id);
+    const customer = await getCustomer(order.customer);
+    const marketplace = await getMarketplace(order.marketplace);
+    return { order, orderItems, customer, marketplace };
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const order = useLoaderData({ from: "/orders/detail/$orderId" });
+  const { order, orderItems, customer, marketplace } = useLoaderData({
+    from: "/orders/detail/$orderId",
+  });
 
   return (
     <>
-      <DetailsHeader orderId={order.order_id} marketplace={order.marketplace} />
+      <DetailsHeader orderId={order.order_id} marketplace={marketplace} />
       <Grid2 container spacing={2}>
         <Grid2 size={10}>
           <Stack>
-            <ItemsBox items={order.order_items} />
+            <ItemsBox items={orderItems} />
             <Grid2 container spacing={2}>
               <DetailsBox
                 title="General"
                 details={[
                   { title: "Order ID", value: order.order_id },
-                  { title: "Marketplace", value: order.marketplace.name },
+                  { title: "Marketplace", value: marketplace.name },
                   { title: "Status", value: OrderStatusName[order.status] },
                   { title: "Order Date", value: order.order_date },
                   { title: "Total Price", value: order.total_price },
-                  { title: "Carrier", value: order.carrier.name },
+                  { title: "Carrier", value: order.carrier },
                 ]}
               />
               <DetailsBox
                 title="Billing"
                 details={[
-                  { title: "First Name", value: order.customer.bill_firstname },
-                  { title: "Last Name", value: order.customer.bill_lastname },
-                  { title: "Email", value: order.customer.bill_email },
-                  { title: "Phone", value: order.customer.bill_phone },
-                  { title: "Company", value: order.customer.bill_company },
-                  { title: "Address", value: order.customer.bill_address },
-                  { title: "City", value: order.customer.bill_city },
-                  { title: "Zip Code", value: order.customer.bill_zipcode },
+                  { title: "First Name", value: customer.bill_firstname },
+                  { title: "Last Name", value: customer.bill_lastname },
+                  { title: "Email", value: customer.bill_email },
+                  { title: "Phone", value: customer.bill_phone },
+                  { title: "Company", value: customer.bill_company },
+                  { title: "Address", value: customer.bill_address },
+                  { title: "City", value: customer.bill_city },
+                  { title: "Zip Code", value: customer.bill_zipcode },
                   {
                     title: "Country",
-                    value: CountryCodeName[order.customer.bill_country],
+                    value: CountryCodeName[customer.bill_country],
                   },
                 ]}
               />
               <DetailsBox
                 title="Shipping"
                 details={[
-                  { title: "First Name", value: order.customer.ship_firstname },
-                  { title: "Last Name", value: order.customer.ship_lastname },
-                  { title: "Email", value: order.customer.ship_email },
-                  { title: "Phone", value: order.customer.ship_phone },
-                  { title: "Company", value: order.customer.ship_company },
-                  { title: "Address", value: order.customer.ship_address },
-                  { title: "City", value: order.customer.ship_city },
-                  { title: "Zip Code", value: order.customer.ship_zipcode },
+                  { title: "First Name", value: customer.ship_firstname },
+                  { title: "Last Name", value: customer.ship_lastname },
+                  { title: "Email", value: customer.ship_email },
+                  { title: "Phone", value: customer.ship_phone },
+                  { title: "Company", value: customer.ship_company },
+                  { title: "Address", value: customer.ship_address },
+                  { title: "City", value: customer.ship_city },
+                  { title: "Zip Code", value: customer.ship_zipcode },
                   {
                     title: "Country",
-                    value: CountryCodeName[order.customer.ship_country],
+                    value: CountryCodeName[customer.ship_country],
                   },
                 ]}
               />
